@@ -1,5 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Initial version of the project",
   "Resources": {
     "zonelocal": {
       "Type": "AWS::Route53::HostedZone",
@@ -316,6 +317,5 @@
         "CidrIp": "0.0.0.0/0"
       }
     }
-  },
-  "Description": "Initial version of the project"
+  }
 }
