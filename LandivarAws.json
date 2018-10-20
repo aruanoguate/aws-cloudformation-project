@@ -63,7 +63,13 @@
         "GroupDescription": "default VPC security group",
         "VpcId": {
           "Ref": "LandivarVpc"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarSg"
+          }
+        ]
       }
     },
     "LandivarSgIngress01": {
