@@ -11,7 +11,7 @@
         }
       }
     },
-    "vpc05d5ff257d3a8378e": {
+    "LandivarVpc": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
         "CidrBlock": "10.0.0.0/16",
@@ -26,55 +26,92 @@
         ]
       }
     },
-    "subnet0b1338374f24aab19": {
-      "Type": "AWS::EC2::Subnet",
+    "LandivarAclDefault": {
+      "Type": "AWS::EC2::NetworkAcl",
       "Properties": {
-        "CidrBlock": "10.0.0.0/24",
-        "AvailabilityZone": "us-east-2a",
         "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
+          "Ref": "LandivarVpc"
+        }
+      }
+    },
+    "LandivarAclDefaultIngress01": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "LandivarAclDefault"
+        }
+      }
+    },
+    "LandivarAclDefaultEgress01": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": "true",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "LandivarAclDefault"
+        }
+      }
+    },
+    "LandivarSgDefault": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "default VPC security group",
+        "VpcId": {
+          "Ref": "LandivarVpc"
+        }
+      }
+    },
+    "LandivarSgDefaultIngress01": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgDefault"
         },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarSubnetPublic1"
-          }
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": {
+          "Ref": "LandivarSgDefault"
+        },
+        "SourceSecurityGroupOwnerId": "061686406065"
+      }
+    },
+    "LandivarSgDefaultEgress01": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgDefault"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "LandivarDhcpOptionsDefault": {
+      "Type": "AWS::EC2::DHCPOptions",
+      "Properties": {
+        "DomainName": "us-east-2.compute.internal",
+        "DomainNameServers": [
+          "AmazonProvidedDNS"
         ]
       }
     },
-    "subnet076ef0a417940cdbb": {
-      "Type": "AWS::EC2::Subnet",
+    "LandivarDhcpOptionsAssociation": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
       "Properties": {
-        "CidrBlock": "10.0.1.0/24",
-        "AvailabilityZone": "us-east-2a",
         "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
+          "Ref": "LandivarVpc"
         },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarSubnetPrivate1"
-          }
-        ]
+        "DhcpOptionsId": {
+          "Ref": "LandivarDhcpOptionsDefault"
+        }
       }
     },
-    "subnet017c7fc95a3736f53": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "CidrBlock": "10.0.2.0/24",
-        "AvailabilityZone": "us-east-2b",
-        "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarSubnetPrivate2"
-          }
-        ]
-      }
-    },
-    "igw0076c8e554e39c06a": {
+    "LandivarIgw": {
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
         "Tags": [
@@ -85,236 +122,199 @@
         ]
       }
     },
-    "dopt3c475454": {
-      "Type": "AWS::EC2::DHCPOptions",
-      "Properties": {
-        "DomainName": "us-east-2.compute.internal",
-        "DomainNameServers": [
-          "AmazonProvidedDNS"
-        ]
-      }
-    },
-    "acl088d072e7b15d8f73": {
-      "Type": "AWS::EC2::NetworkAcl",
+    "LandivarIgwAttachment": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
         "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
+          "Ref": "LandivarVpc"
+        },
+        "InternetGatewayId": {
+          "Ref": "LandivarIgw"
         }
       }
     },
-    "rtb07f8cf70f894d32c1": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarRtPublic"
-          }
-        ]
-      }
-    },
-    "rtb0656cbdb239fda494": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarRtDefault"
-          }
-        ]
-      }
-    },
-    "rtb0dad4688fb436e7af": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarRtPrivate"
-          }
-        ]
-      }
-    },
-    "eip1822412654": {
+    "LandivarEipNat": {
       "Type": "AWS::EC2::EIP",
       "Properties": {
         "Domain": "vpc"
       }
     },
-    "sgdefault": {
-      "Type": "AWS::EC2::SecurityGroup",
+    "LandivarSubnetPublic1": {
+      "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "GroupDescription": "default VPC security group",
+        "CidrBlock": "10.0.0.0/24",
+        "AvailabilityZone": "us-east-2a",
         "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
-        }
+          "Ref": "LandivarVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarSubnetPublic1"
+          }
+        ]
       }
     },
-    "acl1": {
-      "Type": "AWS::EC2::NetworkAclEntry",
-      "Properties": {
-        "CidrBlock": "0.0.0.0/0",
-        "Egress": "true",
-        "Protocol": "-1",
-        "RuleAction": "allow",
-        "RuleNumber": "100",
-        "NetworkAclId": {
-          "Ref": "acl088d072e7b15d8f73"
-        }
-      }
-    },
-    "acl2": {
-      "Type": "AWS::EC2::NetworkAclEntry",
-      "Properties": {
-        "CidrBlock": "0.0.0.0/0",
-        "Protocol": "-1",
-        "RuleAction": "allow",
-        "RuleNumber": "100",
-        "NetworkAclId": {
-          "Ref": "acl088d072e7b15d8f73"
-        }
-      }
-    },
-    "subnetacl1": {
+    "LandivarSubnetPublic1AclAssociation": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl088d072e7b15d8f73"
+          "Ref": "LandivarAclDefault"
         },
         "SubnetId": {
-          "Ref": "subnet076ef0a417940cdbb"
+          "Ref": "LandivarSubnetPublic1"
         }
       }
     },
-    "subnetacl2": {
+    "LandivarSubnetPrivate1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.1.0/24",
+        "AvailabilityZone": "us-east-2a",
+        "VpcId": {
+          "Ref": "LandivarVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarSubnetPrivate1"
+          }
+        ]
+      }
+    },
+    "LandivarSubnetPrivate1AclAssociation": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl088d072e7b15d8f73"
+          "Ref": "LandivarAclDefault"
         },
         "SubnetId": {
-          "Ref": "subnet0b1338374f24aab19"
+          "Ref": "LandivarSubnetPrivate1"
         }
       }
     },
-    "subnetacl3": {
+    "LandivarSubnetPrivate2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.2.0/24",
+        "AvailabilityZone": "us-east-2b",
+        "VpcId": {
+          "Ref": "LandivarVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarSubnetPrivate2"
+          }
+        ]
+      }
+    },
+    "LandivarSubnetPrivate2AclAssociation": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl088d072e7b15d8f73"
+          "Ref": "LandivarAclDefault"
         },
         "SubnetId": {
-          "Ref": "subnet017c7fc95a3736f53"
+          "Ref": "LandivarSubnetPrivate2"
         }
       }
     },
-    "gw1": {
-      "Type": "AWS::EC2::VPCGatewayAttachment",
+    "LandivarRouteTableDefault": {
+      "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
+          "Ref": "LandivarVpc"
         },
-        "InternetGatewayId": {
-          "Ref": "igw0076c8e554e39c06a"
-        }
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarRouteTableDefault"
+          }
+        ]
       }
     },
-    "subnetroute1": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    "LandivarRouteTablePublic": {
+      "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "rtb07f8cf70f894d32c1"
+        "VpcId": {
+          "Ref": "LandivarVpc"
         },
-        "SubnetId": {
-          "Ref": "subnet0b1338374f24aab19"
-        }
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarRouteTablePublic"
+          }
+        ]
       }
     },
-    "subnetroute3": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "rtb0dad4688fb436e7af"
-        },
-        "SubnetId": {
-          "Ref": "subnet017c7fc95a3736f53"
-        }
-      }
-    },
-    "subnetroute4": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "rtb0dad4688fb436e7af"
-        },
-        "SubnetId": {
-          "Ref": "subnet076ef0a417940cdbb"
-        }
-      }
-    },
-    "route1": {
+    "LandivarRouteTablePublicRoute01": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "rtb07f8cf70f894d32c1"
+          "Ref": "LandivarRouteTablePublic"
         },
         "GatewayId": {
-          "Ref": "igw0076c8e554e39c06a"
+          "Ref": "LandivarIgw"
         }
       },
-      "DependsOn": "gw1"
+      "DependsOn": "LandivarIgwAttachment"
     },
-    "route2": {
+    "LandivarSubnetPublic1RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "LandivarRouteTablePublic"
+        },
+        "SubnetId": {
+          "Ref": "LandivarSubnetPublic1"
+        }
+      }
+    },
+    "LandivarRouteTablePrivate": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "LandivarVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarRouteTablePrivate"
+          }
+        ]
+      }
+    },
+    "LandivarRouteTablePrivateRoute01": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "rtb0dad4688fb436e7af"
+          "Ref": "LandivarRouteTablePrivate"
         }
       }
     },
-    "dchpassoc1": {
-      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+    "LandivarSubnetPrivate1RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
-        "VpcId": {
-          "Ref": "vpc05d5ff257d3a8378e"
+        "RouteTableId": {
+          "Ref": "LandivarRouteTablePrivate"
         },
-        "DhcpOptionsId": {
-          "Ref": "dopt3c475454"
+        "SubnetId": {
+          "Ref": "LandivarSubnetPrivate1"
         }
       }
     },
-    "ingress1": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
+    "LandivarSubnetPrivate2RouteTableAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
-        "GroupId": {
-          "Ref": "sgdefault"
+        "RouteTableId": {
+          "Ref": "LandivarRouteTablePrivate"
         },
-        "IpProtocol": "-1",
-        "SourceSecurityGroupId": {
-          "Ref": "sgdefault"
-        },
-        "SourceSecurityGroupOwnerId": "061686406065"
-      }
-    },
-    "egress1": {
-      "Type": "AWS::EC2::SecurityGroupEgress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "sgdefault"
-        },
-        "IpProtocol": "-1",
-        "CidrIp": "0.0.0.0/0"
+        "SubnetId": {
+          "Ref": "LandivarSubnetPrivate2"
+        }
       }
     }
   }
