@@ -2,15 +2,6 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Initial version of the project",
   "Resources": {
-    "zonelocal": {
-      "Type": "AWS::Route53::HostedZone",
-      "Properties": {
-        "Name": "local.",
-        "HostedZoneConfig": {
-          "Comment": "Created by Route 53 Auto Naming"
-        }
-      }
-    },
     "LandivarVpc": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
