@@ -141,7 +141,7 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.0.0/24",
-        "AvailabilityZone": "us-east-2a",
+        "AvailabilityZone": "us-east-2c",
         "VpcId": {
           "Ref": "LandivarVpc"
         },
@@ -168,7 +168,7 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.1.0/24",
-        "AvailabilityZone": "us-east-2a",
+        "AvailabilityZone": "us-east-2c",
         "VpcId": {
           "Ref": "LandivarVpc"
         },
@@ -263,10 +263,15 @@
       }
     },
     "LandivarNgw": {
-      "Type" : "AWS::EC2::NatGateway",
-      "Properties" : {
-        "AllocationId" : { "Fn::GetAtt" : ["LandivarEipNat", "AllocationId"]},
-        "SubnetId" : {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "LandivarEipNat",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
           "Ref": "LandivarSubnetPublic1"
         },
         "Tags": [
@@ -323,6 +328,69 @@
         "SubnetId": {
           "Ref": "LandivarSubnetPrivate2"
         }
+      }
+    },
+    "LandivarSgInstances": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "security group to grant access to the EC2 instances",
+        "VpcId": {
+          "Ref": "LandivarVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarSgInstances"
+          }
+        ]
+      }
+    },
+    "LandivarSgInstancesIngress01": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgInstances"
+        },
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": {
+          "Ref": "LandivarSgInstances"
+        },
+        "SourceSecurityGroupOwnerId": "061686406065"
+      }
+    },
+    "LandivarSgInstancesEgress01": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgInstances"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "LandivarInstanceFrontend01": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "us-east-2c",
+        "ImageId": "ami-0b59bfac6be064b78",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "InstanceType": "t2.micro",
+        "KeyName": "personal_key_student",
+        "Monitoring": "false",
+        "SecurityGroupIds": [
+          {
+            "Ref": "LandivarSgInstances"
+          }
+        ],
+        "SubnetId": {
+          "Ref": "LandivarSubnetPrivate1"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarInstanceFrontend01"
+          }
+        ]
       }
     }
   }
