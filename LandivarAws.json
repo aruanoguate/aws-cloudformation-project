@@ -57,7 +57,7 @@
         }
       }
     },
-    "LandivarSgDefault": {
+    "LandivarSg": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "default VPC security group",
@@ -66,24 +66,24 @@
         }
       }
     },
-    "LandivarSgDefaultIngress01": {
+    "LandivarSgIngress01": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "LandivarSgDefault"
+          "Ref": "LandivarSg"
         },
         "IpProtocol": "-1",
         "SourceSecurityGroupId": {
-          "Ref": "LandivarSgDefault"
+          "Ref": "LandivarSg"
         },
         "SourceSecurityGroupOwnerId": "061686406065"
       }
     },
-    "LandivarSgDefaultEgress01": {
+    "LandivarSgEgress01": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "LandivarSgDefault"
+          "Ref": "LandivarSg"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
