@@ -81,8 +81,7 @@
         "IpProtocol": "-1",
         "SourceSecurityGroupId": {
           "Ref": "LandivarSg"
-        },
-        "SourceSecurityGroupOwnerId": "061686406065"
+        }
       }
     },
     "LandivarSgEgress01": {
@@ -351,11 +350,24 @@
         "GroupId": {
           "Ref": "LandivarSgInstances"
         },
-        "IpProtocol": "-1",
-        "SourceSecurityGroupId": {
+        "CidrIp": "0.0.0.0/0",
+        "FromPort": "22",
+        "ToPort": "22",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": "0.0.0.0/0"
+      }
+    },
+    "LandivarSgInstancesIngress02": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
           "Ref": "LandivarSgInstances"
         },
-        "SourceSecurityGroupOwnerId": "061686406065"
+        "CidrIp": "0.0.0.0/0",
+        "FromPort": "80",
+        "ToPort": "80",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": "0.0.0.0/0"
       }
     },
     "LandivarSgInstancesEgress01": {
@@ -364,12 +376,100 @@
         "GroupId": {
           "Ref": "LandivarSgInstances"
         },
-        "IpProtocol": "-1",
-        "CidrIp": "0.0.0.0/0"
+        "CidrIp": "0.0.0.0/0",
+        "IpProtocol": "-1"
       }
     },
     "LandivarInstanceFrontend01": {
       "Type": "AWS::EC2::Instance",
+      "Metadata": {
+        "Comment": "Install a simple PHP application",
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "packages": {
+              "yum": {
+                "httpd": [],
+                "php": []
+              }
+            },
+            "files": {
+              "/var/www/html/index.php": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "<?php\n",
+                      "echo '<h1>AWS CloudFormation sample PHP application</h1>';\n",
+                      "?>\n"
+                    ]
+                  ]
+                },
+                "mode": "000644",
+                "owner": "apache",
+                "group": "apache"
+              },
+              "/etc/cfn/cfn-hup.conf": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "[main]\n",
+                      "stack=",
+                      {
+                        "Ref": "AWS::StackId"
+                      },
+                      "\n",
+                      "region=",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "\n"
+                    ]
+                  ]
+                },
+                "mode": "000400",
+                "owner": "root",
+                "group": "root"
+              },
+              "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "[cfn-auto-reloader-hook]\n",
+                      "triggers=post.update\n",
+                      "path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init\n",
+                      "action=/opt/aws/bin/cfn-init -s ",
+                      {
+                        "Ref": "AWS::StackId"
+                      },
+                      " -r WebServerInstance ",
+                      " --region     ",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "\n",
+                      "runas=root\n"
+                    ]
+                  ]
+                }
+              }
+            },
+            "services": {
+              "sysvinit": {
+                "httpd": {
+                  "enabled": "true",
+                  "ensureRunning": "true"
+                },
+                "sendmail": {
+                  "enabled": "false",
+                  "ensureRunning": "false"
+                }
+              }
+            }
+          }
+        }
+      },
       "Properties": {
         "AvailabilityZone": "us-east-2c",
         "ImageId": "ami-0b59bfac6be064b78",
