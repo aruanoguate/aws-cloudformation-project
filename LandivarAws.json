@@ -218,20 +218,6 @@
         }
       }
     },
-    "LandivarRouteTableDefault": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "LandivarVpc"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarRouteTableDefault"
-          }
-        ]
-      }
-    },
     "LandivarRouteTablePublic": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
