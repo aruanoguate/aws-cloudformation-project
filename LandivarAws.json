@@ -382,6 +382,56 @@
     },
     "LandivarInstanceFrontend01": {
       "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "us-east-2c",
+        "ImageId": "ami-0b59bfac6be064b78",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "InstanceType": "t2.micro",
+        "KeyName": "personal_key_student",
+        "Monitoring": "false",
+        "SecurityGroupIds": [
+          {
+            "Ref": "LandivarSgInstances"
+          }
+        ],
+        "SubnetId": {
+          "Ref": "LandivarSubnetPrivate1"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarInstanceFrontend01"
+          }
+        ]
+      }
+    },
+    "LandivarInstanceFrontend02": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": "us-east-2b",
+        "ImageId": "ami-0b59bfac6be064b78",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "InstanceType": "t2.micro",
+        "KeyName": "personal_key_student",
+        "Monitoring": "false",
+        "SecurityGroupIds": [
+          {
+            "Ref": "LandivarSgInstances"
+          }
+        ],
+        "SubnetId": {
+          "Ref": "LandivarSubnetPrivate2"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarInstanceFrontend02"
+          }
+        ]
+      }
+    },
+    "LandivarInstanceTEMP": {
+      "Type": "AWS::EC2::Instance",
       "Metadata": {
         "Comment": "Install a simple PHP application",
         "AWS::CloudFormation::Init": {
@@ -483,12 +533,12 @@
           }
         ],
         "SubnetId": {
-          "Ref": "LandivarSubnetPrivate1"
+          "Ref": "LandivarSubnetPublic1"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": "LandivarInstanceFrontend01"
+            "Value": "LandivarInstanceTEMP"
           }
         ]
       }
