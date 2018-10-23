@@ -351,7 +351,7 @@
           "Ref": "LandivarSgInstances"
         },
         "CidrIp": "0.0.0.0/0",
-        "Description" : "SSH access",
+        "Description": "SSH access",
         "FromPort": "22",
         "ToPort": "22",
         "IpProtocol": "tcp"
@@ -364,7 +364,7 @@
           "Ref": "LandivarSgInstances"
         },
         "CidrIp": "0.0.0.0/0",
-        "Description" : "HTTP access",
+        "Description": "HTTP access",
         "FromPort": "80",
         "ToPort": "80",
         "IpProtocol": "tcp"
@@ -438,19 +438,18 @@
           "config": {
             "packages": {
               "yum": {
-                "httpd": [],
-                "php": []
+                "httpd": []
               }
             },
             "files": {
-              "/var/www/html/index.php": {
+              "/var/www/html/index.html": {
                 "content": {
                   "Fn::Join": [
                     "",
                     [
-                      "<?php\n",
-                      "echo '<h1>AWS CloudFormation sample PHP application</h1>';\n",
-                      "?>\n"
+                      "<html>\n",
+                      "<h1>AWS CloudFormation sample</h1>\n",
+                      "</html>"
                     ]
                   ]
                 },
@@ -527,19 +526,45 @@
         "InstanceType": "t2.micro",
         "KeyName": "personal_key_student",
         "Monitoring": "false",
-        "SecurityGroupIds": [
+        "NetworkInterfaces": [
           {
-            "Ref": "LandivarSgInstances"
+            "AssociatePublicIpAddress": "True",
+            "DeleteOnTermination": "True",
+            "SubnetId": {
+              "Ref": "LandivarSubnetPublic1"
+            },
+            "DeviceIndex": "0",
+            "GroupSet": [
+              {
+                "Ref": "LandivarSgInstances"
+              }
+            ]
           }
         ],
-        "SubnetId": {
-          "Ref": "LandivarSubnetPublic1"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "LandivarInstanceTEMP"
           }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "WebsiteURL": {
+      "Description": "URL for newly created website",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "http://",
+            {
+              "Fn::GetAtt": [
+                "LandivarInstanceTEMP",
+                "PublicDnsName"
+              ]
+            }
+          ]
         ]
       }
     }
