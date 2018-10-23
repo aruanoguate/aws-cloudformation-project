@@ -351,6 +351,7 @@
           "Ref": "LandivarSgInstances"
         },
         "CidrIp": "0.0.0.0/0",
+        "Description" : "SSH access",
         "FromPort": "22",
         "ToPort": "22",
         "IpProtocol": "tcp"
@@ -363,6 +364,7 @@
           "Ref": "LandivarSgInstances"
         },
         "CidrIp": "0.0.0.0/0",
+        "Description" : "HTTP access",
         "FromPort": "80",
         "ToPort": "80",
         "IpProtocol": "tcp"
