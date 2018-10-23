@@ -432,93 +432,6 @@
     },
     "LandivarInstanceTEMP": {
       "Type": "AWS::EC2::Instance",
-      "Metadata": {
-        "Comment": "Install a simple PHP application",
-        "AWS::CloudFormation::Init": {
-          "config": {
-            "packages": {
-              "yum": {
-                "httpd": []
-              }
-            },
-            "files": {
-              "/var/www/html/index.html": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "<html>\n",
-                      "<h1>AWS CloudFormation sample</h1>\n",
-                      "</html>"
-                    ]
-                  ]
-                },
-                "mode": "000644",
-                "owner": "apache",
-                "group": "apache"
-              },
-              "/etc/cfn/cfn-hup.conf": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "[main]\n",
-                      "stack=",
-                      {
-                        "Ref": "AWS::StackId"
-                      },
-                      "\n",
-                      "region=",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      "\n"
-                    ]
-                  ]
-                },
-                "mode": "000400",
-                "owner": "root",
-                "group": "root"
-              },
-              "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "[cfn-auto-reloader-hook]\n",
-                      "triggers=post.update\n",
-                      "path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init\n",
-                      "action=/opt/aws/bin/cfn-init -s ",
-                      {
-                        "Ref": "AWS::StackId"
-                      },
-                      " -r WebServerInstance ",
-                      " --region     ",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      "\n",
-                      "runas=root\n"
-                    ]
-                  ]
-                }
-              }
-            },
-            "services": {
-              "sysvinit": {
-                "httpd": {
-                  "enabled": "true",
-                  "ensureRunning": "true"
-                },
-                "sendmail": {
-                  "enabled": "false",
-                  "ensureRunning": "false"
-                }
-              }
-            }
-          }
-        }
-      },
       "Properties": {
         "AvailabilityZone": "us-east-2c",
         "ImageId": "ami-0b59bfac6be064b78",
@@ -541,6 +454,21 @@
             ]
           }
         ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "\n",
+              [
+                "#!/bin/bash -xe",
+                "sudo yum update -y",
+                "sudo yum install httpd -y",
+                "sudo /etc/init.d/httpd start",
+                "echo \"<html><body><h1>Awesome Alvaro Enrique!!!</h1>\" > /var/www/html/index.html",
+                "echo \"</body></html>\" >> /var/www/html/index.html"
+              ]
+            ]
+          }
+        },
         "Tags": [
           {
             "Key": "Name",
