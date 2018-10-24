@@ -528,6 +528,34 @@
         "Path": "/landivar/",
         "RoleName": "lambda-s3-role"
       }
+    },
+    "LandivarLambdaCreateThumbnail": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "awslandivar.lambda.code",
+          "S3Key": "lambda_resize.zip"
+        },
+        "Description": "This function is in charge of the generation of thumbnails",
+        "FunctionName": "CreateThumbnail",
+        "Handler": "index.handler",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "LandivarRoleLambdaS3",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs8.10",
+        "Timeout": 10,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarLambdaCreateThumbnail"
+          }
+        ]
+      },
+      "DependsOn": "LandivarRoleLambdaS3"
     }
   },
   "Outputs": {
