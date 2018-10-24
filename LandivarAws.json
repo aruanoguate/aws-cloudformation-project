@@ -551,7 +551,10 @@
             {
               "Event": "s3:ObjectCreated:*",
               "Function": {
-                "Ref": "LandivarLambdaCreateThumbnail"
+                "Fn::GetAtt": [
+                  "LandivarLambdaCreateThumbnail",
+                  "Arn"
+                ]
               }
             }
           ]
@@ -563,7 +566,10 @@
           }
         ]
       },
-      "DependsOn": "LandivarLambdaCreateThumbnailPermission"
+      "DependsOn": [
+        "LandivarLambdaCreateThumbnail",
+        "LandivarLambdaCreateThumbnailPermission"
+      ]
     },
     "LandivarS3ImagesResized": {
       "Type": "AWS::S3::Bucket",
