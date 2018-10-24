@@ -477,11 +477,11 @@
         ]
       }
     },
-    "LandivarS3ImagesOriginals":{
-      "Type" : "AWS::S3::Bucket",
-      "Properties" : {
-        "AccessControl" : "AuthenticatedRead",
-        "BucketName" : "originals.images.awslandivar",
+    "LandivarS3ImagesOriginals": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "AuthenticatedRead",
+        "BucketName": "originals.images.awslandivar",
         "Tags": [
           {
             "Key": "Name",
@@ -490,17 +490,43 @@
         ]
       }
     },
-    "LandivarS3ImagesThumbnails":{
-      "Type" : "AWS::S3::Bucket",
-      "Properties" : {
-        "AccessControl" : "AuthenticatedRead",
-        "BucketName" : "thumbnails.images.awslandivar",
+    "LandivarS3ImagesThumbnails": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "AuthenticatedRead",
+        "BucketName": "thumbnails.images.awslandivar",
         "Tags": [
           {
             "Key": "Name",
             "Value": "LandivarS3ImagesThumbnails"
           }
         ]
+      }
+    },
+    "lambda-s3-role": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AWSLambdaExecute"
+        ],
+        "Path": "/landivar/",
+        "RoleName": "lambda-s3-role"
       }
     }
   },
