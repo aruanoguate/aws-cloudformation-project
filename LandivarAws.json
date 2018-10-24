@@ -477,32 +477,6 @@
         ]
       }
     },
-    "LandivarS3Images": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "AuthenticatedRead",
-        "BucketName": "awslandivar.images",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarS3Images"
-          }
-        ]
-      }
-    },
-    "LandivarS3ImagesResized": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "AuthenticatedRead",
-        "BucketName": "awslandivar.imagesresized",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "LandivarS3ImagesResized"
-          }
-        ]
-      }
-    },
     "LandivarRoleLambdaS3": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -556,6 +530,53 @@
         ]
       },
       "DependsOn": "LandivarRoleLambdaS3"
+    },
+    "LandivarLambdaCreateThumbnailPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "LandivarLambdaCreateThumbnail"
+        },
+        "Principal": "s3.amazonaws.com"
+      }
+    },
+    "LandivarS3Images": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "AuthenticatedRead",
+        "BucketName": "awslandivar.images",
+        "NotificationConfiguration": {
+          "LambdaConfigurations": [
+            {
+              "Event": "s3:ObjectCreated:*",
+              "Function": {
+                "Ref": "LandivarLambdaCreateThumbnail"
+              }
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarS3Images"
+          }
+        ]
+      },
+      "DependsOn": "LandivarLambdaCreateThumbnailPermission"
+    },
+    "LandivarS3ImagesResized": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "AuthenticatedRead",
+        "BucketName": "awslandivar.imagesresized",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarS3ImagesResized"
+          }
+        ]
+      }
     }
   },
   "Outputs": {
