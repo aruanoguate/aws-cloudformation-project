@@ -477,7 +477,7 @@
         ]
       }
     },
-    "LandivarS3ImagesOriginals": {
+    "LandivarS3Images": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "AuthenticatedRead",
@@ -485,12 +485,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "LandivarS3ImagesOriginals"
+            "Value": "LandivarS3Images"
           }
         ]
       }
     },
-    "LandivarS3ImagesThumbnails": {
+    "LandivarS3ImagesResized": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "AuthenticatedRead",
@@ -498,12 +498,12 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "LandivarS3ImagesThumbnails"
+            "Value": "LandivarS3ImagesResized"
           }
         ]
       }
     },
-    "LandivarLambdaS3Role": {
+    "LandivarRoleLambdaS3": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
