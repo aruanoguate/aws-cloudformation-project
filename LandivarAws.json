@@ -481,7 +481,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "AuthenticatedRead",
-        "BucketName": "originals.images.awslandivar",
+        "BucketName": "awslandivar.images",
         "Tags": [
           {
             "Key": "Name",
@@ -494,7 +494,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "AuthenticatedRead",
-        "BucketName": "thumbnails.images.awslandivar",
+        "BucketName": "awslandivar.imagesresized",
         "Tags": [
           {
             "Key": "Name",
