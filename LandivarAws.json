@@ -476,6 +476,32 @@
           }
         ]
       }
+    },
+    "LandivarS3ImagesOriginals":{
+      "Type" : "AWS::S3::Bucket",
+      "Properties" : {
+        "AccessControl" : "AuthenticatedRead",
+        "BucketName" : "originals.images.awslandivar",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarS3ImagesOriginals"
+          }
+        ]
+      }
+    },
+    "LandivarS3ImagesThumbnails":{
+      "Type" : "AWS::S3::Bucket",
+      "Properties" : {
+        "AccessControl" : "AuthenticatedRead",
+        "BucketName" : "thumbnails.images.awslandivar",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarS3ImagesThumbnails"
+          }
+        ]
+      }
     }
   },
   "Outputs": {
