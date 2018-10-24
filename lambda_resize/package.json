@@ -1,0 +1,28 @@
+{
+  "name": "lambda_resize",
+  "version": "1.0.0",
+  "description": "Sample code to resize an image on a S3 bucket",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aruanoguate/landivar_aws_project.git"
+  },
+  "keywords": [
+    "aws",
+    "S3",
+    "lambda"
+  ],
+  "author": "https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/aruanoguate/landivar_aws_project/issues"
+  },
+  "homepage": "https://github.com/aruanoguate/landivar_aws_project#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "gm": "^1.23.1"
+  }
+}
