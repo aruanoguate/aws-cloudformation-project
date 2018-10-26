@@ -7,8 +7,8 @@
       "Properties": {
         "CidrBlock": "10.0.0.0/16",
         "InstanceTenancy": "default",
-        "EnableDnsSupport": "true",
-        "EnableDnsHostnames": "true",
+        "EnableDnsSupport": true,
+        "EnableDnsHostnames": true,
         "Tags": [
           {
             "Key": "Name",
@@ -35,7 +35,7 @@
       "Type": "AWS::EC2::NetworkAclEntry",
       "Properties": {
         "CidrBlock": "0.0.0.0/0",
-        "Egress": "false",
+        "Egress": false,
         "Protocol": "-1",
         "RuleAction": "allow",
         "RuleNumber": "100",
@@ -48,7 +48,7 @@
       "Type": "AWS::EC2::NetworkAclEntry",
       "Properties": {
         "CidrBlock": "0.0.0.0/0",
-        "Egress": "true",
+        "Egress": true,
         "Protocol": "-1",
         "RuleAction": "allow",
         "RuleNumber": "100",
@@ -388,7 +388,7 @@
         "InstanceInitiatedShutdownBehavior": "stop",
         "InstanceType": "t2.micro",
         "KeyName": "personal_key_student",
-        "Monitoring": "false",
+        "Monitoring": false,
         "SecurityGroupIds": [
           {
             "Ref": "LandivarSgInstances"
@@ -413,7 +413,7 @@
         "InstanceInitiatedShutdownBehavior": "stop",
         "InstanceType": "t2.micro",
         "KeyName": "personal_key_student",
-        "Monitoring": "false",
+        "Monitoring": false,
         "SecurityGroupIds": [
           {
             "Ref": "LandivarSgInstances"
@@ -438,11 +438,11 @@
         "InstanceInitiatedShutdownBehavior": "stop",
         "InstanceType": "t2.micro",
         "KeyName": "personal_key_student",
-        "Monitoring": "false",
+        "Monitoring": false,
         "NetworkInterfaces": [
           {
-            "AssociatePublicIpAddress": "True",
-            "DeleteOnTermination": "True",
+            "AssociatePublicIpAddress": true,
+            "DeleteOnTermination": true,
             "SubnetId": {
               "Ref": "LandivarSubnetPublic1"
             },
@@ -583,6 +583,114 @@
           }
         ]
       }
+    },
+    "LandivarSgRds": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "security group to grant access to the RDS instances",
+        "VpcId": {
+          "Ref": "LandivarVpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarSgRds"
+          }
+        ]
+      }
+    },
+    "LandivarSgRdsIngress01": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgRds"
+        },
+        "CidrIp": "0.0.0.0/0",
+        "Description": "SSH access",
+        "FromPort": "22",
+        "ToPort": "22",
+        "IpProtocol": "tcp"
+      }
+    },
+    "LandivarSgRdsIngress02": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgRds"
+        },
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Direct MySQL access",
+        "FromPort": "3306",
+        "ToPort": "3306",
+        "IpProtocol": "tcp"
+      }
+    },
+    "LandivarSgRdsEgress01": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgRds"
+        },
+        "CidrIp": "0.0.0.0/0",
+        "IpProtocol": "-1"
+      }
+    },
+    "LandivarRDSSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group used for the database",
+        "DBSubnetGroupName": "landivar-rds-subnetgroup",
+        "SubnetIds": [
+          {
+            "Ref": "LandivarSubnetPrivate1"
+          },
+          {
+            "Ref": "LandivarSubnetPrivate2"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarRDSSubnetGroup"
+          }
+        ]
+      }
+    },
+    "LandivarRDSMySQL": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "20",
+        "AllowMajorVersionUpgrade": true,
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZone": "us-east-2c",
+        "DBInstanceClass": "db.t2.micro",
+        "DBInstanceIdentifier": "landivar-rds-mysql",
+        "DBSubnetGroupName": {
+          "Ref": "LandivarRDSSubnetGroup"
+        },
+        "Engine": "mysql",
+        "EngineVersion": "5.7.23",
+        "MasterUsername": "landivaruser",
+        "MasterUserPassword": {
+          "Ref": "DBMasterUserPassword"
+        },
+        "MultiAZ": false,
+        "Port": "3306",
+        "PubliclyAccessible": true,
+        "StorageEncrypted": false,
+        "StorageType": "standard",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LandivarRDSMySQL"
+          }
+        ],
+        "VPCSecurityGroups": [
+          {
+            "Ref": "LandivarSg"
+          }
+        ]
+      }
     }
   },
   "Outputs": {
@@ -602,6 +710,13 @@
           ]
         ]
       }
+    }
+  },
+  "Parameters": {
+    "DBMasterUserPassword": {
+      "Type": "String",
+      "Default": "",
+      "Description": "The password used for the RDS instance master."
     }
   }
 }
