@@ -687,7 +687,7 @@
         ],
         "VPCSecurityGroups": [
           {
-            "Ref": "LandivarSg"
+            "Ref": "LandivarSgRds"
           }
         ]
       }
