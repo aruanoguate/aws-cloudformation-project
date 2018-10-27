@@ -1,0 +1,10 @@
+version: "3.5"
+services:
+  main_website:
+    image: aruanoguate/landivar_aws_project:photo_gallery
+    container_name: photo_gallery
+    networks:
+      - net_001
+networks:
+  net_001:
+      

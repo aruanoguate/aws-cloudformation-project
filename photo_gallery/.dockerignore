@@ -1,0 +1,7 @@
+node_modules
+.dockerignore
+.gitignore
+bitbucket-pipelines.yml
+Dockerfile
+package-lock.json
+README.md

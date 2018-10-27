@@ -1,0 +1,48 @@
+{
+  "name": "photo_gallery",
+  "version": "1.0.0",
+  "description": "This is a photo gallery that interacts with a AWS S3 bucket",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node server.js",
+    "minp": "gulp min_prod",
+    "mind": "gulp min_dev"
+  },
+  "keywords": [
+    "aws",
+    "S3",
+    "docker"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aruanoguate/landivar_aws_project.git"
+  },
+  "author": "Alvaro Ruano",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/aruanoguate/landivar_aws_project#readme",
+  "dependencies": {
+    "bootstrap": "^4.1.0",
+    "express": "^4.16.3",
+    "font-awesome": "^4.7.0",
+    "helmet": "^3.12.1",
+    "http-status": "^1.1.2",
+    "jquery": "^3.3.1",
+    "jquery.easing": "^1.4.1",
+    "magnific-popup": "^1.1.0",
+    "popper.js": "^1.14.3",
+    "scrollreveal": "^3.4.0",
+    "underscore": "^1.9.0",
+    "wagner-core": "^0.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^3.46.1",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-rename": "^1.2.3",
+    "gulp-uglify": "^3.0.0",
+    "pump": "^3.0.0",
+    "uglify-js": "^3.3.22"
+  }
+}
