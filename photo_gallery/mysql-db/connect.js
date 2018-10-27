@@ -6,7 +6,7 @@ module.exports = function (wagner, server) {
     return new Promise(function (resolve, reject) {
         try {
             // The connectionSettings is obtained from wagner using the server name
-            connectionSettings = wagner.get('MYSQL_' + server);
+            connectionSettings = wagner.get('connectionSettings');
             // A new connection is created
             var connection = mysql.createConnection(connectionSettings);
             // When the connection is stablished
