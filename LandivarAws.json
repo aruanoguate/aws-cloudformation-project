@@ -370,6 +370,19 @@
         "IpProtocol": "tcp"
       }
     },
+    "LandivarSgInstancesIngress03": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "LandivarSgInstances"
+        },
+        "CidrIp": "0.0.0.0/0",
+        "Description": "MySQL access forwarding port",
+        "FromPort": "3306",
+        "ToPort": "3306",
+        "IpProtocol": "tcp"
+      }
+    },
     "LandivarSgInstancesEgress01": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
