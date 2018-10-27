@@ -3,6 +3,8 @@ services:
   main_website:
     image: aruanoguate/landivar_aws_project:photo_gallery
     container_name: photo_gallery
+    environment:
+      - MYSQLPASSWORD
     networks:
       - net_001
 networks:

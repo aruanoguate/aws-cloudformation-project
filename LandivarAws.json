@@ -424,7 +424,7 @@
                       {
                         "Ref": "DBMasterUserPassword"
                       },
-                      "\" >> ~/.bashrc"
+                      "\" >> /home/ec2-user/.bashrc"
                     ]
                   ]
                 },
@@ -481,7 +481,7 @@
                       {
                         "Ref": "DBMasterUserPassword"
                       },
-                      "\" >> ~/.bashrc"
+                      "\" >> /home/ec2-user/.bashrc"
                     ]
                   ]
                 },
@@ -545,7 +545,7 @@
                       {
                         "Ref": "DBMasterUserPassword"
                       },
-                      "\" >> ~/.bashrc"
+                      "\" >> /home/ec2-user/.bashrc"
                     ]
                   ]
                 },

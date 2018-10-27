@@ -8,6 +8,8 @@ services:
       - "./launch.sh:/cmd/launch.sh" # DEV ONLY - Mount the launch script to speed up changes
     ports:
       - "80:5000" # DEV ONLY - The port 80 is exposed to the host
+    environment:
+      - MYSQLPASSWORD
     networks:
       - net_001_dev
 networks:
