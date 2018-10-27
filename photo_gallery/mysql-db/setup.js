@@ -5,7 +5,7 @@ var fs = require('fs');
 // needed to then create the database connections
 module.exports = function (wagner) {
     // The connection settings are pulled from the configuration file
-    var connectionsSettings = JSON.parse(fs.readFileSync('./photo_gallery/mysql-db/connections-settings.json').toString());
+    var connectionsSettings = JSON.parse(fs.readFileSync('./mysql-db/connections-settings.json').toString());
     var serversAvailable = [];
 
     // For each connection setting, we add a new wagner service
