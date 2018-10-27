@@ -416,6 +416,18 @@
               "\n",
               [
                 "#!/bin/bash -xe",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo \"export MYSQLPASSWORD=",
+                      {
+                        "Ref": "DBMasterUserPassword"
+                      },
+                      "\" >> ~/.bashrc"
+                    ]
+                  ]
+                },
                 "sudo yum update -y",
                 "sudo yum install docker -y",
                 "sudo usermod -a -G docker ec2-user",
@@ -461,6 +473,18 @@
               "\n",
               [
                 "#!/bin/bash -xe",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo \"export MYSQLPASSWORD=",
+                      {
+                        "Ref": "DBMasterUserPassword"
+                      },
+                      "\" >> ~/.bashrc"
+                    ]
+                  ]
+                },
                 "sudo yum update -y",
                 "sudo yum install docker -y",
                 "sudo usermod -a -G docker ec2-user",
@@ -513,6 +537,18 @@
               "\n",
               [
                 "#!/bin/bash -xe",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo \"export MYSQLPASSWORD=",
+                      {
+                        "Ref": "DBMasterUserPassword"
+                      },
+                      "\" >> ~/.bashrc"
+                    ]
+                  ]
+                },
                 "sudo yum update -y",
                 "sudo yum install docker -y",
                 "sudo usermod -a -G docker ec2-user",
