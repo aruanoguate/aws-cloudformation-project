@@ -1,13 +1,15 @@
 var express = require('express');
 var router = require('./router');
 var owasp = require('./owasp');
-
+var mysqldb = require('../mysql-db');
 
 // This function setups a new express aplication and 
 // binds it with the express router created in router.js file
 module.exports = function (wagner, port) {
     return new Promise(function (resolve, reject) {
         try {
+            // To setup the mysqldb submodule
+            mysqldb.setup(wagner);
             // To create a new express aplication
             var api = express();
             // To put the application in wagner for automatic test purposes

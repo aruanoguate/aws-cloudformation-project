@@ -1,0 +1,10 @@
+[
+  {
+    "name": "main",
+    "host": "localhost",
+    "port": 9000,
+    "database": "photo_gallery",
+    "user": "landivaruser",
+    "connectTimeout": 10000
+  }
+]

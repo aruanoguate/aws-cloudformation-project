@@ -42,14 +42,14 @@ module.exports.setup = function (wagner) {
     // Images CRUD
     router.get('/photos/',
         [wagner.invoke(photos.get)]);
-    router.get('/photos/:id',
-        [wagner.invoke(photos.getbyid)]);
-    router.post('/photos',
-        [wagner.invoke(photos.post)]);
-    router.put('/photos',
-        [wagner.invoke(photos.put)]);
-    router.delete('/photos/:id',
-        [wagner.invoke(photos.delete)]);
+    // router.get('/photos/:id',
+    //     [wagner.invoke(photos.getbyid)]);
+    // router.post('/photos',
+    //     [wagner.invoke(photos.post)]);
+    // router.put('/photos',
+    //     [wagner.invoke(photos.put)]);
+    // router.delete('/photos/:id',
+    //     [wagner.invoke(photos.delete)]);
 
 
     // To add the router to wagner to make it available to the map generator
@@ -62,6 +62,9 @@ module.exports.setup = function (wagner) {
     // created router and some setup to handle static files
     wagner.invoke(function (api, publicPathFileSystem, protectedPathFileSystem
         , publicPathURL, protectedPathURL, mainPage) {
+
+        // All the api methods are handled by the router
+        api.use('/api/', router);
 
         // Add a middleware to return all the ui static files from the ui/static folder, 
         // these files don't need authentication

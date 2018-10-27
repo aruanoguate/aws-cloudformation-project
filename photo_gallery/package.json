@@ -31,6 +31,7 @@
     "jquery": "^3.3.1",
     "jquery.easing": "^1.4.1",
     "magnific-popup": "^1.1.0",
+    "mysql": "^2.16.0",
     "popper.js": "^1.14.3",
     "scrollreveal": "^3.4.0",
     "underscore": "^1.9.0",
