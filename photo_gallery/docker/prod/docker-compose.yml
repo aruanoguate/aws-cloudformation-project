@@ -5,6 +5,8 @@ services:
     container_name: photo_gallery
     environment:
       - MYSQLPASSWORD
+    ports:
+      - "80:5000" # DEV ONLY - The port 80 is exposed to the host
     networks:
       - net_001
 networks:
