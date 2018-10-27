@@ -1,6 +1,8 @@
 var express = require('express');
+var bodyparser = require('body-parser');
 var status = require('http-status');
 var path = require('path');
+var photos = require('./photos');
 
 module.exports.setup = function (wagner) {
     // To define the different paths used in the local filesystem
@@ -23,6 +25,38 @@ module.exports.setup = function (wagner) {
     wagner.factory('loginPage', function (publicPathURL) {
         return publicPathURL + 'login.html';
     });
+
+    // An express router is created to handle all the api requests
+    var router = express.Router();
+
+    // create application/json parser, this will be used for all
+    // the UI requests
+    var jsonParser = bodyparser.json()
+    router.use(jsonParser);
+
+
+    // To associate the path and HTTP method with a specific handler
+    // which are called using wagner to grant access to the different
+    // mongoose models
+
+    // Images CRUD
+    router.get('/photos/',
+        [wagner.invoke(photos.get)]);
+    router.get('/photos/:id',
+        [wagner.invoke(photos.getbyid)]);
+    router.post('/photos',
+        [wagner.invoke(photos.post)]);
+    router.put('/photos',
+        [wagner.invoke(photos.put)]);
+    router.delete('/photos/:id',
+        [wagner.invoke(photos.delete)]);
+
+
+    // To add the router to wagner to make it available to the map generator
+    wagner.factory('router', function () {
+        return router;
+    });
+
 
     // To setup the app to handle the requests using the previously
     // created router and some setup to handle static files
