@@ -424,7 +424,7 @@
                 "sudo service docker start",
                 "mkdir -p /home/ec2-user/photo_gallery",
                 "cd /home/ec2-user/photo_gallery",
-                "wget https://s3.us-east-2.amazonaws.com/awslandivar.lambda.code/docker-compose.yml",
+                "wget https://raw.githubusercontent.com/aruanoguate/landivar_aws_project/master/photo_gallery/docker/prod/docker-compose.yml",
                 "docker-compose up"
               ]
             ]
@@ -469,7 +469,7 @@
                 "sudo service docker start",
                 "mkdir -p /home/ec2-user/photo_gallery",
                 "cd /home/ec2-user/photo_gallery",
-                "wget https://s3.us-east-2.amazonaws.com/awslandivar.lambda.code/docker-compose.yml",
+                "wget https://raw.githubusercontent.com/aruanoguate/landivar_aws_project/master/photo_gallery/docker/prod/docker-compose.yml",
                 "docker-compose up"
               ]
             ]
@@ -521,7 +521,7 @@
                 "sudo service docker start",
                 "mkdir -p /home/ec2-user/photo_gallery",
                 "cd /home/ec2-user/photo_gallery",
-                "wget https://s3.us-east-2.amazonaws.com/awslandivar.lambda.code/docker-compose.yml",
+                "wget https://raw.githubusercontent.com/aruanoguate/landivar_aws_project/master/photo_gallery/docker/prod/docker-compose.yml",
                 "docker-compose up"
               ]
             ]
